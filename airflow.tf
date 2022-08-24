@@ -6,7 +6,7 @@ resource "helm_release" "airflow" {
   version          = var.airflow_helm_chart_version
   create_namespace = true
   wait             = false
-  
+
   # TODO Support custom airflow docker image with baked dags
 
   set {

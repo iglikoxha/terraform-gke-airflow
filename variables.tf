@@ -46,7 +46,6 @@ variable "node_pool_name" {
 variable "node_pool_machine_type" {
   type        = string
   description = "Node pool machine type"
-  default     = "e2-standard-2"
 }
 
 variable "node_pool_node_count" {
@@ -110,7 +109,9 @@ variable "airflow_gitsync_subpath" {
 }
 
 variable "airflow_ssh_secret" {
-  type = string
+  type        = string
   description = "Base64 encrypted private key"
-  default = ""
+
+  # Base64 encoded space
+  default = "IA=="
 }
