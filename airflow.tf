@@ -61,5 +61,5 @@ resource "helm_release" "airflow" {
 
   # TODO Postgres in Cloud SQL
 
-  depends_on = [data.google_container_cluster.primary.endpoint]
+  depends_on = [google_container_node_pool.primary-node-pool]
 }

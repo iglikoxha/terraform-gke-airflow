@@ -20,7 +20,7 @@ resource "google_container_cluster" "primary" {
 
 data "google_container_cluster" "primary" {
   name     = google_container_cluster.primary.name
-  location = google_container_cluster.primary.zone
+  location = google_container_cluster.primary.location
 }
 
 resource "google_container_node_pool" "primary-node-pool" {

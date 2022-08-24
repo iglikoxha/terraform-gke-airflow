@@ -108,3 +108,9 @@ variable "airflow_gitsync_subpath" {
   description = "Path of dags in repository"
   default     = ""
 }
+
+variable "airflow_ssh_secret" {
+  type = string
+  description = "Base64 encrypted private key"
+  default = ""
+}
