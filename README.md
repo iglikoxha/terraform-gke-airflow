@@ -2,9 +2,8 @@
 
 ## Adding credentials
 
-Supply the service account json key file to Terraform \
-by using the environment variable ```GOOGLE_APPLICATION_CREDENTIALS```, \
-setting the value to the location of the file.
+Supply the service account json key file to Terraform by using the environment variable \
+```GOOGLE_APPLICATION_CREDENTIALS```, setting the value to the location of the file.
 
 ## Enable the following services on your GCP project:
 - compute.googleapis.com
@@ -13,9 +12,8 @@ setting the value to the location of the file.
 - servicenetworking.googleapis.com
 
 ### Why manually enable these services?
-Automatically enabling GCP services with Terraform is \
-a little flaky and will cause dependency errors \ 
-that's why this module doesn't do it.
+Automatically enabling GCP services with Terraform is a little flaky \ 
+and will cause dependency errors that's why this module doesn't do it.
 
 ## A private GitHub repository for dags (Optional)
 Used for mounting DAGs from a private Github repo using Git-Sync sidecar: \
