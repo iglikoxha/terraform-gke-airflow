@@ -1,6 +1,6 @@
 # Set Up
 
-## Enable the following services on your GCP project:
+## Enable the following services
 - compute.googleapis.com
 - container.googleapis.com
 - sqladmin.googleapis.com
