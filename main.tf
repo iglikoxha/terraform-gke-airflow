@@ -7,7 +7,7 @@ data "google_compute_subnetwork" "subnet" {
 resource "google_container_cluster" "primary" {
   project    = var.project_id
   name       = "${var.resource_prefix}${var.cluster_name}${var.resource_suffix}"
-  location   = var.zone
+  location   = var.regional_cluster ? var.region : var.zone
   network    = var.network_name
   subnetwork = data.google_compute_subnetwork.subnet.self_link
 

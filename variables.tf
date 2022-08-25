@@ -43,6 +43,12 @@ variable "cluster_name" {
   default     = "cluster"
 }
 
+variable "regional_cluster" {
+  type        = bool
+  description = "Whether the GKE cluster is regional (zonal if false)"
+  default     = false
+}
+
 variable "cluster_initial_node_count" {
   type        = number
   description = "Cluster initial node count"
