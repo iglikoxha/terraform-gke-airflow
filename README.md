@@ -10,6 +10,7 @@ Supply the service account json key file to Terraform by using the environment v
 - container.googleapis.com
 - sqladmin.googleapis.com
 - servicenetworking.googleapis.com
+- cloudresourcemanager.googleapis.com
 
 ### Why manually enable these services?
 Automatically enabling GCP services with Terraform is a little flaky \
