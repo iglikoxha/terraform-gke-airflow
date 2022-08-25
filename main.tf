@@ -1,0 +1,149 @@
+data "google_compute_subnetwork" "subnet" {
+  project = var.project_id
+  name    = var.subnetwork_name
+  region  = var.region
+}
+
+resource "google_container_cluster" "primary" {
+  project    = var.project_id
+  name       = "${var.resource_prefix}${var.cluster_name}${var.resource_suffix}"
+  location   = var.zone
+  network    = var.network_name
+  subnetwork = data.google_compute_subnetwork.subnet.self_link
+
+  # We can't create a cluster with no node pool defined, but we want to only use
+  # separately managed node pools. So we create the smallest possible default
+  # node pool and immediately delete it.
+  remove_default_node_pool = true
+  initial_node_count       = var.cluster_initial_node_count
+
+  # For connecting using private IP, the GKE cluster must be VPC-native 
+  # and peered with the same VPC network as the Cloud SQL instance.
+  networking_mode = "VPC_NATIVE"
+
+  # VPC_NATIVE enables IP aliasing, and requires the 
+  # ip_allocation_policy block to be defined.
+  ip_allocation_policy {}
+}
+
+data "google_container_cluster" "primary" {
+  project  = var.project_id
+  name     = google_container_cluster.primary.name
+  location = google_container_cluster.primary.location
+}
+
+# It is recommended that node pools be created and managed as separate resources.
+# Node pools defined directly in the google_container_cluster resource cannot 
+# be removed without re-creating the cluster.
+resource "google_container_node_pool" "primary-node-pool" {
+  project    = var.project_id
+  name       = "${var.resource_prefix}${var.node_pool_name}${var.resource_suffix}"
+  location   = google_container_cluster.primary.location
+  cluster    = google_container_cluster.primary.name
+  node_count = var.node_pool_node_count
+
+  node_config {
+    machine_type = var.node_pool_machine_type
+  }
+}
+
+# Retrieve an access token as the Terraform runner
+data "google_client_config" "provider" {}
+
+provider "helm" {
+  kubernetes {
+    host                   = "https://${data.google_container_cluster.primary.endpoint}"
+    token                  = data.google_client_config.provider.access_token
+    cluster_ca_certificate = base64decode(data.google_container_cluster.primary.master_auth[0].cluster_ca_certificate, )
+  }
+}
+
+resource "helm_release" "airflow" {
+  project          = var.project_id
+  name             = "airflow"
+  repository       = "https://airflow.apache.org"
+  chart            = "airflow"
+  namespace        = var.airflow_namespace
+  version          = var.airflow_helm_chart_version
+  create_namespace = true
+  wait             = false
+
+  # TODO Support custom airflow docker image with baked dags
+
+  set {
+    name  = "defaultAirflowTag"
+    value = var.airflow_default_tag
+  }
+
+  set {
+    name  = "airflowVersion"
+    value = var.airflow_version
+  }
+
+  set {
+    name  = "executor"
+    value = var.airflow_executor
+  }
+
+  set {
+    name  = "webserver.service.type"
+    value = "LoadBalancer"
+  }
+
+  set {
+    name  = "dags.gitSync.enabled"
+    value = var.airflow_gitsync_enabled
+  }
+
+  set {
+    name  = "dags.gitSync.repo"
+    value = var.airflow_gitsync_repo
+  }
+
+  set {
+    name  = "dags.gitSync.branch"
+    value = var.airflow_gitsync_branch
+  }
+
+  set {
+    name  = "dags.gitSync.subPath"
+    value = var.airflow_gitsync_subpath
+  }
+
+  set {
+    name  = "dags.gitSync.sshKeySecret"
+    value = "airflow-ssh-secret"
+  }
+
+  set {
+    name  = "extraSecrets.airflow-ssh-secret.data"
+    value = "gitSshKey: ${var.airflow_ssh_secret}"
+  }
+
+  set {
+    name  = "data.metadataConnection.user"
+    value = var.db_user
+  }
+
+  set {
+    name  = "data.metadataConnection.pass"
+    value = var.db_password
+  }
+
+  set {
+    name  = "data.metadataConnection.host"
+    value = var.db_host
+  }
+
+  set {
+    name  = "data.metadataConnection.db"
+    value = var.db_name
+  }
+
+  set {
+    name  = "postgresql.enabled"
+    value = var.db_host == "~"
+  }
+
+  depends_on = [google_container_node_pool.primary-node-pool]
+}
