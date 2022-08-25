@@ -7,6 +7,9 @@ module "sql-postgres" {
 	db_name = "airflow"
 	db_user = "airflow"
 	db_password = "airflow"
+
+	airflow_gitsync_enabled = true
+	airflow_gitsync_subpath = "dags"
 }
 
 module "gke-airflow" {
@@ -21,5 +24,3 @@ module "gke-airflow" {
 	db_user = "airflow"
 	db_password = "airflow"
 }
-
-
