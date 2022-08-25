@@ -76,7 +76,7 @@ variable "node_pool_node_count" {
 variable "db_host" {
   type        = string
   description = "Database host"
-  default     = "~"
+  default     = ""
 }
 
 variable "db_name" {
@@ -157,4 +157,16 @@ variable "airflow_ssh_secret" {
 
   # Base64 encoded space
   default = "IA=="
+}
+
+variable "images_airflow_repository" {
+  type        = string
+  description = "Airflow image repository"
+  default     = ""
+}
+
+variable "images_airflow_tag" {
+  type        = string
+  description = "Airflow image tag"
+  default     = ""
 }

@@ -67,8 +67,6 @@ resource "helm_release" "airflow" {
   create_namespace = true
   wait             = false
 
-  # TODO Support custom airflow docker image with baked dags
-
   set {
     name  = "defaultAirflowTag"
     value = var.airflow_default_tag
@@ -77,6 +75,16 @@ resource "helm_release" "airflow" {
   set {
     name  = "airflowVersion"
     value = var.airflow_version
+  }
+
+  set {
+    name  = "images.airflow.repository"
+    value = var.images_airflow_repository
+  }
+
+  set {
+    name  = "images.airflow.tag"
+    value = var.images_airflow_tag
   }
 
   set {
