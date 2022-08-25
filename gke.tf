@@ -8,7 +8,7 @@ resource "google_container_cluster" "primary" {
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
   # node pool and immediately delete it.
-  remove_default_node_pool = var.node_pool_machine_type != ""
+  remove_default_node_pool = true
   initial_node_count       = var.cluster_initial_node_count
 
   # For connecting using private IP, the GKE cluster must be VPC-native 
@@ -29,7 +29,6 @@ data "google_container_cluster" "primary" {
 # Node pools defined directly in the google_container_cluster resource cannot 
 # be removed without re-creating the cluster.
 resource "google_container_node_pool" "primary-node-pool" {
-  count      = var.node_pool_machine_type != "" ? 1 : 0
   name       = "${var.resource_prefix}${var.node_pool_name}${var.resource_suffix}"
   location   = google_container_cluster.primary.location
   cluster    = google_container_cluster.primary.name

@@ -46,6 +46,7 @@ variable "node_pool_name" {
 variable "node_pool_machine_type" {
   type        = string
   description = "Node pool machine type"
+  default     = "e2-standard-2"
 }
 
 variable "node_pool_node_count" {
