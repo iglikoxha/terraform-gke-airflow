@@ -54,3 +54,11 @@ variable "ipv4_enabled" {
   description = "Whether to enable ipv4"
   default     = false
 }
+
+variable "airflow_ssh_secret" {
+  type        = string
+  description = "Base64 encrypted private key"
+
+  # Base64 encoded space
+  default = "IA=="
+}
