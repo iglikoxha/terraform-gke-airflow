@@ -6,5 +6,5 @@ module "basic_airflow" {
 
   # Baked dags in docker local image
   images_airflow_repository = "airflow-local"
-  images_airflow_tag = "latest"
+  images_airflow_tag        = "latest"
 }

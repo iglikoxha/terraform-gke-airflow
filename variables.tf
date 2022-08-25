@@ -170,3 +170,9 @@ variable "images_airflow_tag" {
   description = "Airflow image tag"
   default     = ""
 }
+
+variable "values_path" {
+  type        = string
+  description = "Helm chart values path"
+  default     = "values.yaml"
+}

@@ -67,6 +67,10 @@ resource "helm_release" "airflow" {
   create_namespace = true
   wait             = false
 
+  values = [
+    "${file("${var.values_path}")}"
+  ]
+
   set {
     name  = "defaultAirflowTag"
     value = var.airflow_default_tag
