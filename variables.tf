@@ -25,6 +25,18 @@ variable "resource_suffix" {
   default     = ""
 }
 
+variable "network_name" {
+  type        = string
+  description = "Network name"
+  default     = "default"
+}
+
+variable "subnetwork_name" {
+  type        = string
+  description = "Subnetwork name"
+  default     = "default"
+}
+
 variable "cluster_name" {
   type        = string
   description = "GKE cluster name"
@@ -53,6 +65,30 @@ variable "node_pool_node_count" {
   type        = number
   description = "Node pool node count"
   default     = 1
+}
+
+variable "db_user" {
+  type        = string
+  description = "Database user"
+  default     = "postgres"
+}
+
+variable "db_password" {
+  type        = string
+  description = "Database password"
+  default     = "postgres"
+}
+
+variable "db_host" {
+  type        = string
+  description = "Database host"
+  default     = "~"
+}
+
+variable "db_name" {
+  type        = string
+  description = "Database name"
+  default     = "postgres"
 }
 
 variable "airflow_helm_chart_version" {

@@ -59,7 +59,30 @@ resource "helm_release" "airflow" {
     value = "gitSshKey: ${var.airflow_ssh_secret}"
   }
 
-  # TODO Postgres in Cloud SQL
+  set {
+    name  = "data.metadataConnection.user"
+    value = var.db_user
+  }
+
+  set {
+    name  = "data.metadataConnection.pass"
+    value = var.db_password
+  }
+
+  set {
+    name  = "data.metadataConnection.host"
+    value = var.db_host
+  }
+
+  set {
+    name  = "data.metadataConnection.db"
+    value = var.db_name
+  }
+
+  set {
+    name  = "postgresql.enabled"
+    value = var.db_host == "~"
+  }
 
   depends_on = [google_container_node_pool.primary-node-pool]
 }

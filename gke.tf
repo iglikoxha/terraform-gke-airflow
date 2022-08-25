@@ -1,9 +1,9 @@
-
 resource "google_container_cluster" "primary" {
   name     = "${var.resource_prefix}${var.cluster_name}${var.resource_suffix}"
   location = var.zone
-
-  # TODO Add custom VPC
+  network  = var.network_name
+  # Subnet region defaults to the region configured in the provider.
+  subnetwork = var.subnetwork_name
 
   # We can't create a cluster with no node pool defined, but we want to only use
   # separately managed node pools. So we create the smallest possible default
