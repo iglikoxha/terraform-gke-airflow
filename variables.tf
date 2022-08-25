@@ -136,7 +136,7 @@ variable "airflow_gitsync_repo" {
 variable "airflow_gitsync_branch" {
   type        = string
   description = "Repository branch"
-  default     = ""
+  default     = "main"
 }
 
 variable "airflow_gitsync_subpath" {

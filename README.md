@@ -6,9 +6,12 @@ Supply the service account json key file to Terraform by using the environment v
 ```GOOGLE_APPLICATION_CREDENTIALS```, setting the value to the location of the file.
 
 ## Enable the following services on your GCP project:
+(required)
 - compute.googleapis.com
 - container.googleapis.com
-- sqladmin.googleapis.com
+
+(required for peered-cloudsql-postgres example)
+- sqladmin.googleapis.com 
 - servicenetworking.googleapis.com
 - cloudresourcemanager.googleapis.com
 
