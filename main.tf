@@ -59,7 +59,6 @@ provider "helm" {
 }
 
 resource "helm_release" "airflow" {
-  project          = var.project_id
   name             = "airflow"
   repository       = "https://airflow.apache.org"
   chart            = "airflow"

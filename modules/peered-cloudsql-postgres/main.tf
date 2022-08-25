@@ -30,7 +30,7 @@ resource "google_sql_database_instance" "instance" {
   provider = google-beta
 
   project          = var.project_id
-  name             = "${var.resource_prefix}${var.db_instance_name}${var.resource_suffix}-${random_id.db_name_suffix.hex}"
+  name             = "${var.db_instance_name}-${random_id.db_name_suffix.hex}"
   region           = var.region
   database_version = "POSTGRES_14"
 

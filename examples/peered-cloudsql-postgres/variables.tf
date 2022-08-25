@@ -8,16 +8,9 @@ variable "region" {
   description = "Region to provision the resources"
 }
 
-variable "resource_prefix" {
+variable "zone" {
   type        = string
-  description = "A prefix for all provisioned resource names"
-  default     = ""
-}
-
-variable "resource_suffix" {
-  type        = string
-  description = "A suffix for all provisiond resource names"
-  default     = ""
+  description = "Zone to provision the resources"
 }
 
 variable "network_name" {
@@ -38,6 +31,12 @@ variable "db_tier" {
   default     = "db-g1-small"
 }
 
+variable "db_name" {
+  type        = string
+  description = "Database name"
+  default     = "postgres"
+}
+
 variable "db_user" {
   type        = string
   description = "Database user"
@@ -47,12 +46,6 @@ variable "db_user" {
 variable "db_password" {
   type        = string
   description = "Database password"
-  default     = "postgres"
-}
-
-variable "db_name" {
-  type        = string
-  description = "Database name"
   default     = "postgres"
 }
 

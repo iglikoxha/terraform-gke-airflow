@@ -67,18 +67,6 @@ variable "node_pool_node_count" {
   default     = 1
 }
 
-variable "db_user" {
-  type        = string
-  description = "Database user"
-  default     = "postgres"
-}
-
-variable "db_password" {
-  type        = string
-  description = "Database password"
-  default     = "postgres"
-}
-
 variable "db_host" {
   type        = string
   description = "Database host"
@@ -88,6 +76,18 @@ variable "db_host" {
 variable "db_name" {
   type        = string
   description = "Database name"
+  default     = "postgres"
+}
+
+variable "db_user" {
+  type        = string
+  description = "Database user"
+  default     = "postgres"
+}
+
+variable "db_password" {
+  type        = string
+  description = "Database password"
   default     = "postgres"
 }
 
