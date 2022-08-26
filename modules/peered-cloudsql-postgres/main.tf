@@ -34,7 +34,7 @@ resource "google_sql_database_instance" "instance" {
   region           = var.region
   database_version = "POSTGRES_14"
 
-  depends_on = [google_service_networking_connection.private_vpc_connection]
+  deletion_protection = false
 
   settings {
     tier = var.db_tier
@@ -43,6 +43,8 @@ resource "google_sql_database_instance" "instance" {
       private_network = data.google_compute_network.network.id
     }
   }
+
+  depends_on = [google_service_networking_connection.private_vpc_connection]
 }
 
 resource "google_sql_user" "user" {

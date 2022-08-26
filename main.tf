@@ -96,9 +96,32 @@ resource "helm_release" "airflow" {
     value = var.airflow_executor
   }
 
+  # set {
+  #  name  = "webserver.service.type"
+  #  value = "LoadBalancer"
+  # }
+
   set {
-    name  = "webserver.service.type"
-    value = "LoadBalancer"
+	name = "ingress.web.enabled"
+	value = true
+  }
+
+  set {
+    name = "ingress.web.path"
+	value = "/airflow"
+  }
+
+  # There is a gotcha that needs to be addressed if you are using the Helm chart:
+  # decrease the webserver.readinessProbe.timeoutSeconds from the default 30 to 5 
+  # or change the check-interval value from 5 to 30.
+
+  # Because the default checkIntervalSec value for a health check on GCP is only 5 seconds
+  # while the default on the Airflow Helm chart is 30, this results in a value error 1 that 
+  # will prevent your Ingress (and subsequently, the GCP load balancer) from being created.
+
+  set {
+	name = "webserver.readinessProbe.timeoutSeconds"
+	value = 5
   }
 
   set {
@@ -153,7 +176,7 @@ resource "helm_release" "airflow" {
 
   set {
     name  = "postgresql.enabled"
-    value = var.db_host == "~"
+    value = var.db_host == ""
   }
 
   depends_on = [google_container_node_pool.primary-node-pool]
