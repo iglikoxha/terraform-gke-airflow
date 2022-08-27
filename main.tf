@@ -102,13 +102,13 @@ resource "helm_release" "airflow" {
   # }
 
   set {
-	name = "ingress.web.enabled"
-	value = true
+    name  = "ingress.web.enabled"
+    value = true
   }
 
   set {
-    name = "ingress.web.path"
-	value = "/airflow"
+    name  = "ingress.web.path"
+    value = "/airflow"
   }
 
   # There is a gotcha that needs to be addressed if you are using the Helm chart:
@@ -120,8 +120,8 @@ resource "helm_release" "airflow" {
   # will prevent your Ingress (and subsequently, the GCP load balancer) from being created.
 
   set {
-	name = "webserver.readinessProbe.timeoutSeconds"
-	value = 5
+    name  = "webserver.readinessProbe.timeoutSeconds"
+    value = 5
   }
 
   set {
@@ -175,9 +175,30 @@ resource "helm_release" "airflow" {
   }
 
   set {
+    name  = "data.metadataConnection.port"
+    value = var.db_port
+  }
+
+  set {
     name  = "postgresql.enabled"
     value = var.db_host == ""
   }
 
   depends_on = [google_container_node_pool.primary-node-pool]
+}
+
+module "metabase" {
+  project_id = var.project_id
+  source     = "./modules/metabase"
+
+  enabled     = var.metabase_enabled
+  db_type     = var.db_host == "" ? "" : "postgres"
+  db_host     = var.db_host == "" ? "" : var.db_host
+  db_name     = var.db_host == "" ? "" : var.db_name
+  db_user     = var.db_host == "" ? "" : var.db_user
+  db_password = var.db_host == "" ? "" : var.db_password
+  db_port     = var.db_host == "" ? "" : var.db_port
+
+  cluster_name     = google_container_cluster.primary.name
+  cluster_location = google_container_cluster.primary.location
 }

@@ -13,4 +13,6 @@ module "gitsync_airflow" {
   airflow_ssh_secret = var.airflow_ssh_secret
 
   values_path = "../../values.yaml"
+
+  metabase_enabled = true
 }

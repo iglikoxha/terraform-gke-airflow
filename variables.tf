@@ -79,6 +79,12 @@ variable "db_host" {
   default     = ""
 }
 
+variable "db_port" {
+  type        = string
+  description = "Database port"
+  default     = ""
+}
+
 variable "db_name" {
   type        = string
   description = "Database name"
@@ -175,4 +181,10 @@ variable "values_path" {
   type        = string
   description = "Helm chart values path"
   default     = "values.yaml"
+}
+
+variable "metabase_enabled" {
+  type        = bool
+  description = "Deploy metabase in cluster"
+  default     = false
 }
